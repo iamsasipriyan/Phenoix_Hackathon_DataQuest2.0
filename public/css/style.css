@@ -1,0 +1,139 @@
+/* =========================
+   RESET
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* =========================
+   BODY
+========================= */
+body {
+  min-height: 100vh;
+  background: radial-gradient(
+      circle at top,
+      #fff7ed,
+      #f3efe7
+    );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* =========================
+   HEADER / TITLE
+========================= */
+.app-header {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.app-title {
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  background: linear-gradient(
+    135deg,
+    #f97316,
+    #ef4444,
+    #db2777,
+    #7c3aed
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.app-tagline {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* =========================
+   LOGIN WRAPPER
+========================= */
+.login-wrapper {
+  height: 550px;
+  /* flex: 1; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* =========================
+   LOGIN CARD
+========================= */
+.login-card {
+  width: 420px;
+  background: #ffffff;
+  padding: 34px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+}
+
+.login-card h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #111827;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+/* =========================
+   GOOGLE BUTTON
+========================= */
+.google-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  padding: 14px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+
+  font-size: 15px;
+  font-weight: 500;
+  color: #111827;
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.google-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+.google-btn:hover {
+  background: #f9fafb;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 600px) {
+  .app-title {
+    font-size: 34px;
+  }
+
+  .login-card {
+    width: 92%;
+    padding: 26px;
+  }
+}

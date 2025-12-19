@@ -1,0 +1,12 @@
+[
+  { "id": 1, "title": "Check notifications" },
+  { "id": 2, "title": "Respond to emails" },
+  { "id": 3, "title": "Team stand-up meeting" },
+  { "id": 4, "title": "Update project documentation" },
+  { "id": 5, "title": "Lunch break" },
+  { "id": 6, "title": "Work on backend integration" },
+  { "id": 7, "title": "Code review" },
+  { "id": 8, "title": "Prepare daily report" },
+  { "id": 9, "title": "Plan tasks for tomorrow" },
+  { "id": 10, "title": "Learning session" }
+]

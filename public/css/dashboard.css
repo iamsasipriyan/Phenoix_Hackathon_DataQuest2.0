@@ -1,0 +1,1387 @@
+/* ======================
+   RESET & VARIABLES
+====================== */
+:root {
+  /* BACKGROUNDS */
+  --bg-main: #f8fafc;              /* page background */
+  --bg-panel: #ffffff;             /* sidebar / panels */
+  --bg-card: #ffffff;              /* cards */
+  --border-soft: rgba(0, 0, 0, 0.08);
+
+  /* TEXT */
+  --text-main: #0f172a;             /* primary text (black) */
+  --text-muted: #64748b;            /* secondary text */
+
+  /* ACCENTS */
+  --accent-blue: #2563eb;
+  --accent-purple: #7c3aed;
+  --accent-green: #16a34a;
+  --accent-pink: #db2777;           /* FIXED typo */
+  --accent-orange: #f59e0b;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+/* ======================
+   APP LAYOUT
+====================== */
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+/* ======================
+   SIDEBAR
+====================== */
+.sidebar {
+  width: 240px;
+  padding: 22px;
+  background: linear-gradient(180deg, #020617, #020617);
+  border-right: 1px solid var(--border-soft);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-blue);
+}
+
+.sidebar h4 {
+  margin: 12px 0 2px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.sidebar p {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ADD TASK BUTTON */
+.add-task-btn {
+  margin-top: 14px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2563eb, #38bdf8);
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.add-task-btn:hover {
+  opacity: 0.9;
+}
+
+/* LOGOUT */
+.logout-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  color: white;
+  cursor: pointer;
+}
+
+/* ======================
+   MAIN
+====================== */
+.main {
+  flex: 1;
+  padding: 30px;
+  overflow: auto;
+}
+
+.main h2 {
+  margin-bottom: 22px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* ======================
+   WORK AREA
+====================== */
+/* ======================
+   WORK AREA LAYOUT
+====================== */
+.work-area {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+  flex-wrap: nowrap; /* 🔑 prevents stacking */
+}
+
+
+/* ======================
+   CALENDAR
+====================== */
+.calendar-container {
+  display: flex;
+  width: 240px;
+  min-width: 240px;
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  border-radius: 16px;
+  border: 1px solid var(--border-soft);
+  height: 600px;
+  overflow-y: auto;
+}
+.calendar-container {
+  flex-shrink: 0;          /* 🔑 prevents collapsing */
+  width: 240px;
+  min-width: 240px;
+}
+
+/* TIME COLUMN */
+.time-column {
+  width: 56px;
+  border-right: 1px solid var(--border-soft);
+}
+
+.hour {
+  height: 60px;
+  font-size: 11px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* EVENTS */
+.events-column {
+  width: calc(240px - 56px);
+  position: relative;
+}
+
+.event {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  color: white;
+  font-size: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+}
+
+.event strong {
+  display: block;
+  font-size: 13px;
+}
+
+/* ======================
+   TODO LIST
+====================== */
+.todo-container {
+  width: 280px;
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  border-radius: 16px;
+  border: 1px solid var(--border-soft);
+  padding: 18px;
+}
+
+.todo-container h3 {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* TODO ITEM */
+.todo-item {
+  padding: 12px 14px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  color: white;
+  font-size: 13px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.todo-item span {
+  font-weight: 600;
+}
+
+.todo-item small {
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+/* COLOR VARIANTS */
+.todo-item.purple { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+.todo-item.blue   { background: linear-gradient(135deg, #0284c7, #38bdf8); }
+.todo-item.pink   { background: linear-gradient(135deg, #db2777, #f472b6); }
+.todo-item.orange { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+.todo-item.green  { background: linear-gradient(135deg, #059669, #34d399); }
+
+/* ======================
+   MODAL (BLUR POPUP)
+====================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2,6,23,0.6);
+  backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.task-modal {
+  width: 360px;
+  background: var(--bg-panel);
+  padding: 24px;
+  border-radius: 18px;
+  border: 1px solid var(--border-soft);
+}
+
+.task-modal h3 {
+  margin-bottom: 16px;
+}
+
+.task-modal input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: black;
+  margin-bottom: 16px;
+}
+
+/* MODAL ACTIONS */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-btn {
+  background: rgba(255,255,255,0.12);
+  color: black;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #2563eb, #38bdf8);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+/* ======================
+   SCROLLBAR
+====================== */
+.calendar-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.calendar-container::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 6px;
+}
+/* ======================
+   TODO CHECKBOX
+====================== */
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: opacity 0.3s ease;
+}
+
+/* Hide default checkbox */
+.todo-check input {
+  display: none;
+}
+
+/* Custom checkbox */
+.todo-check {
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+
+.checkmark {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 2px solid rgba(255,255,255,0.8);
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* Checked state */
+.todo-check input:checked + .checkmark {
+  background: rgba(255,255,255,0.9);
+}
+
+/* Title */
+.todo-title {
+  flex: 1;
+  font-size: 13px;
+  color: white;
+}
+
+/* COMPLETED STATE */
+.todo-item.completed {
+  opacity: 0.6;
+}
+
+.todo-item.completed .todo-title {
+  text-decoration: line-through;
+}
+/* ======================
+   PROFILE INLINE LAYOUT
+====================== */
+.profile-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.profile-row img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #3b82f6;
+}
+
+.profile-info h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.profile-info p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* ADD TASK BUTTON (SIDEBAR) */
+.add-task-btn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-task-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(59,130,246,0.35);
+}
+/* ======================
+   CALENDAR VIEW SWITCH
+====================== */
+.calendar-view-switch {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calendar-view-switch button {
+  width: 100%;
+  padding: 9px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.05);
+  color: #e5e7eb;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar-view-switch button:hover {
+  background: rgba(59,130,246,0.25);
+  border-color: rgba(59,130,246,0.4);
+}
+
+.calendar-view-switch button.active {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(59,130,246,0.35);
+}
+.calendar-view-switch {
+  margin-top: 18px;
+}
+
+.view-label {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.view-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.view-list li {
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #e5e7eb;
+}
+
+.view-list li:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.view-list li.active {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+.view-list {
+  list-style: none;
+  margin-top: 18px;
+  padding: 0;
+}
+
+.view-list li {
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #cbd5f5;
+  cursor: pointer;
+  background: rgba(255,255,255,0.05);
+  transition: all 0.2s ease;
+}
+
+.view-list li:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.view-list li.active {
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+  color: #ffffff;
+}
+/* ======================
+   CALENDAR MODAL
+====================== */
+.calendar-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.calendar-modal-overlay.active {
+  display: flex;
+}
+
+.calendar-modal {
+  background: transparent;
+}
+
+/* LARGE CALENDAR FOR WEEK/MONTH */
+.calendar-modal .calendar-container {
+  width: 80vw;
+  max-width: 900px;
+  height: 80vh;
+  overflow: hidden;
+}
+
+/* INLINE CALENDAR (HOUR) */
+.inline-calendar {
+  position: relative;
+}
+.todo-container {
+  width: 320px;
+  min-width: 320px;
+}
+/* =========================
+   RESET & VARIABLES
+========================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+:root {
+  --bg-main: #f8fafc;
+  --bg-panel: #ffffff;
+  --bg-card: #ffffff;
+
+  --border-soft: #e5e7eb;
+
+  --text-main: #0f172a;
+  --text-muted: #6b7280;
+
+  --blue: #3b82f6;
+  --purple: #8b5cf6;
+  --green: #10b981;
+  --pink: #ec4899;
+  --orange: #f59e0b;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+body {
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar {
+  width: 240px;
+  background: #ffffff;
+  border-right: 1px solid var(--border-soft);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.profile-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-row img {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2px solid var(--blue);
+}
+
+.profile-info h4 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.profile-info p {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Add task */
+.add-task-btn {
+  margin-top: 16px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: var(--blue);
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* View list */
+.view-list {
+  list-style: none;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.view-list li {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.view-list li.active {
+  background: #e0edff;
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.logout-btn {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #ef4444;
+  color: white;
+  cursor: pointer;
+}
+
+/* =========================
+   MAIN
+========================= */
+.main {
+  flex: 1;
+  padding: 30px;
+  overflow: auto;
+}
+
+#calendarTitle {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+/* =========================
+   INLINE CALENDAR (HOUR)
+========================= */
+#inlineCalendarWrapper {
+  display: flex;
+  gap: 24px;
+}
+
+.calendar-container {
+  display: flex;
+  width: 240px;
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-soft);
+  height: 600px;
+  overflow-y: auto;
+}
+
+/* Time column */
+.time-column {
+  width: 56px;
+  border-right: 1px solid var(--border-soft);
+}
+
+.hour {
+  height: 60px;
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 6px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Events column */
+.events-column {
+  flex: 1;
+  position: relative;
+}
+
+.event {
+  position: absolute;
+  left: 8px;
+  /* right: 8px; */
+  border-radius: 10px;
+  padding: 8px 10px;
+  color: white;
+  font-size: 12px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+.event strong {
+  display: block;
+  font-size: 13px;
+}
+
+/* =========================
+   MODAL OVERLAY (WEEK / MONTH)
+========================= */
+.calendar-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.calendar-modal-overlay.active {
+  display: flex;
+}
+
+.calendar-modal {
+  width: 63vw;
+  height: 80vh;
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+
+/* =========================
+   WEEK VIEW
+========================= */
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 16px;
+  height: 100%;
+}
+
+.week-day {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid var(--border-soft);
+}
+
+.week-day-header {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.week-events {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.week-event {
+  background: var(--blue);
+  color: white;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+}
+
+.week-event small {
+  display: block;
+  font-size: 11px;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+/* =========================
+   MONTH VIEW
+========================= */
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 14px;
+  height: 100%;
+}
+
+.month-day {
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 10px;
+  min-height: 110px;
+  border: 1px solid var(--border-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.month-day strong {
+  font-size: 13px;
+}
+
+.month-event {
+  background: var(--purple);
+  color: white;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+}
+
+/* =========================
+   TODO LIST
+========================= */
+.todo-container {
+  width: 280px;
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid var(--border-soft);
+}
+
+.todo-container h3 {
+  margin-bottom: 14px;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.todo-item.purple { background: var(--purple); }
+.todo-item.blue   { background: var(--blue); }
+.todo-item.green  { background: var(--green); }
+.todo-item.pink   { background: var(--pink); }
+.todo-item.orange { background: var(--orange); }
+
+/* Completed */
+.todo-item.completed {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+/* =========================
+   TASK MODAL
+========================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-modal {
+  width: 360px;
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+}
+
+.task-modal input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+}
+
+.todo-container {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+
+  width: 320px;
+  max-height: 70vh;
+  overflow-y: auto;
+
+  z-index: 999;
+}
+/* =========================
+   PIE CHART CARD
+========================= */
+.chart-card {
+  margin-top: 22px;
+  width: 520px;
+  max-width: 100%;
+  background: white;
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.chart-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+/* =========================
+   CENTER COLUMN (Calendar + Chart)
+========================= */
+.center-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+#taskPieChart,
+#taskBarChart {
+  width: 100% !important;
+  height: 280px !important;
+}
+
+/* =========================
+   DASHBOARD GRID
+========================= */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr 360px;
+  height: 100vh;
+}
+
+.middle-panel {
+  padding: 24px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 24px;
+  overflow: auto;
+}
+
+.middle-top {
+  background: white;
+  border-radius: 18px;
+  padding: 18px;
+  border: 1px solid var(--border-soft);
+}
+
+.middle-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.right-panel {
+  padding: 24px;
+  display: grid;
+  grid-template-rows: 1fr 3fr;
+  gap: 24px;
+  overflow: auto;
+}
+
+.right-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.right-bottom {
+  position: static; /* IMPORTANT: remove fixed */
+}
+
+/* =========================
+   FIXED 4-COLUMN LAYOUT
+   (Sidebar + 3 dashboard columns)
+========================= */
+html, body { height: 100%; }
+
+.dashboard-4col {
+  display: grid !important;
+  grid-template-columns: 260px 1fr; /* sidebar | main */
+  height: 100vh;
+}
+
+/* main holds the 3 vertical dashboard columns */
+.dashboard-main {
+  display: grid;
+  grid-template-columns: 300px 1fr 360px; /* calendar | middle | right */
+  gap: 24px;
+  padding: 24px;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* each dashboard column */
+.dash-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0; /* important for overflow */
+}
+
+/* reusable card */
+.card {
+  background: #fff;
+  border: 1px solid var(--border-soft);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+}
+
+/* calendar column uses remaining height */
+.calendar-col { height: 100%; }
+#calendarContainer {
+  flex: 1;
+  width: 100% !important;
+  min-width: 0 !important;
+  /* height: auto !important; */
+  overflow-y: auto;
+}
+
+/* middle split: top 1/2, bottom 1/2 */
+.middle-col { height: 100%; }
+.middle-top { flex: 1; overflow: auto; }
+.middle-bottom { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+/* right split: top 1/4, bottom 3/4 */
+.right-col { height: 100%; }
+.right-top { flex: 1; }
+.right-bottom { flex: 3; overflow-y: auto; }
+
+/* IMPORTANT: kill old fixed todo styles */
+.todo-container {
+  position: static !important;
+  width: 100% !important;
+  max-height: none !important;
+  right: auto !important;
+  bottom: auto !important;
+}
+
+/* chart sizes */
+#taskPieChart {
+  width: 100% !important;
+  height: 260px !important;
+}
+
+#taskBarChart {
+  width: 100% !important;
+  height: 240px !important;
+}
+
+/* FORCE chart height */
+.middle-bottom canvas,
+.right-top canvas {
+  height: 240px !important;
+  max-height: 240px;
+  width: 100% !important;
+  display: block;
+}
+
+/* Ensure chart containers have height */
+.middle-bottom,
+.right-top {
+  min-height: 280px;
+}
+/* =========================
+   PENDING TASKS (MIDDLE TOP)
+========================= */
+
+.pending-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.pending-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  transition: background 0.2s ease;
+}
+
+.pending-item:hover {
+  background: #f1f5f9;
+}
+
+/* checkbox */
+.pending-check input {
+  display: none;
+}
+
+.pending-check .checkmark {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 2px solid #94a3b8;
+  cursor: pointer;
+}
+
+.pending-check input:checked + .checkmark {
+  background: #22c55e;
+  border-color: #22c55e;
+}
+
+/* text */
+.pending-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f172a;
+}
+
+/* completed state */
+.pending-item.completed {
+  opacity: 0.6;
+}
+
+.pending-item.completed .pending-title {
+  text-decoration: line-through;
+}
+.sidebar {
+  padding: 24px 20px;
+}
+
+.sidebar-top {
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* clean spacing between blocks */
+}
+
+.add-task-btn {
+  margin-top: 18px;   /* space after profile */
+  margin-bottom: 10px;
+}
+
+.view-list {
+  margin-top: 10px;
+}
+
+.sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.help-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #e0edff;
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.help-btn:hover {
+  background: #dbeafe;
+}
+
+
+.logout-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: #fecaca;
+}
+.month-day {
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 10px;
+  min-height: 110px;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.month-event {
+  background: #7c3aed;
+  color: white;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+}
+.week-day {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.week-day-header {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.week-events {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.week-event {
+  background: linear-gradient(135deg, #60a5fa, #3b82f6);
+  color: white;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+.events-column {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    height: 650px;
+    gap: 14px;
+}
+.month-day {
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 10px;
+  min-height: 110px;
+  border: 1px solid #e5e7eb;
+  position: relative;
+}
+
+.month-day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Event count badge */
+.event-count {
+  background: linear-gradient(135deg, #7c3aed, #a78bfa);
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+  min-width: 22px;
+  text-align: center;
+}
+.month-day-header {
+  display: flex;
+  flex-direction: column;   /* 🔑 vertical */
+  align-items: flex-start;  /* left aligned */
+  gap: 10px;                /* space between date & count */
+}
+
+.day-number {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Count badge */
+.event-count {
+  /* align-self: center;       center horizontally */
+  background: linear-gradient(135deg, #7c3aed, #a78bfa);
+  color: white;
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  min-width: 26px;
+  text-align: center;
+}
+/* =========================
+   CURRENT TIME LINE (HOUR VIEW)
+========================= */
+.current-time-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #ef4444;
+  z-index: 10;
+}
+
+.current-time-dot {
+  position: absolute;
+  left: -6px;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  background: #ef4444;
+  border-radius: 50%;
+}
+
+/* TODAY TASKS HEADER */
+.todo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+/* ADD (+) BUTTON */
+.todo-add-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+}
+
+.todo-add-btn:hover {
+  background: #1d4ed8;
+  transform: scale(1.08);
+}
+/* TODO HEADER */
+.todo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+/* + BUTTON */
+.todo-add-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.todo-add-btn:hover {
+  background: #1d4ed8;
+  transform: scale(1.1);
+}

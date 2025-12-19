@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calendar Dashboard</title>
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <div class="app dashboard-4col">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="profile-row">
+          <img id="profilePic" />
+          <div class="profile-info">
+            <h4 id="userName"></h4>
+            <p id="userEmail"></p>
+          </div>
+        </div>
+
+        <button class="add-task-btn" onclick="openTaskModal()">+ Add Task</button>
+
+        <ul class="view-list">
+          <li data-view="hour" class="active">Hour</li>
+          <li data-view="week">Week</li>
+          <li data-view="month">Month</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-bottom">
+        <!-- ✅ OPEN CHATBOT -->
+        <button class="help-btn" onclick="openChatModal()">Help</button>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dashboard-main">
+
+      <!-- COL 1 -->
+      <section class="dash-col calendar-col">
+        <h2 id="calendarTitle">Calendar</h2>
+        <div id="inlineCalendarWrapper">
+          <div class="calendar-container" id="calendarContainer">
+            <div class="time-column"></div>
+            <div class="events-column" id="eventsColumn"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COL 2 -->
+      <section class="dash-col middle-col">
+        <div class="card middle-top" id="pendingTasks">
+          <h3>Pending Tasks</h3>
+        </div>
+
+        <div class="card middle-bottom">
+          <h3 class="chart-title">Task Category Comparison</h3>
+          <canvas id="taskPieChart"></canvas>
+        </div>
+      </section>
+
+      <!-- COL 3 -->
+      <section class="dash-col right-col">
+        <div class="card right-top">
+          <h3 class="chart-title">Weekly Productivity</h3>
+          <canvas id="taskBarChart"></canvas>
+        </div>
+
+       <div class="card right-bottom todo-container" id="todoContainer">
+
+  <div class="todo-header">
+    <h3>Today's Tasks</h3>
+
+    <button class="todo-add-btn" onclick="openTaskModal()" title="Add Task">
+      +
+    </button>
+  </div>
+
+  <!-- tasks will be appended here -->
+
+</div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- TASK MODAL -->
+  <div class="modal-overlay" id="taskModal">
+    <div class="task-modal">
+      <h3>Add New Task</h3>
+      <input type="text" id="taskInput" placeholder="Enter task title..." />
+      <div class="modal-actions">
+        <button class="cancel-btn" onclick="closeTaskModal()">Cancel</button>
+        <button class="save-btn">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEK/MONTH MODAL -->
+  <div class="calendar-modal-overlay" id="calendarModal">
+    <div class="calendar-modal" id="calendarModalContent"></div>
+  </div>
+
+  <!-- CHATBOT MODAL -->
+  <div class="modal-overlay" id="chatbotModal"
+    style="display:none; align-items:center; justify-content:center; z-index:3000;">
+    
+    <div class="chatbot-modal-content"
+      style="width:80vw;height:80vh;background:#fff;border-radius:16px;
+      overflow:hidden;display:flex;flex-direction:column;position:relative;
+      box-shadow:0 25px 50px -12px rgba(0,0,0,.25);">
+
+      <!-- ✅ CLOSE BUTTON -->
+      <button class="close-chat-btn" onclick="closeChatModal()"
+        style="position:absolute;top:15px;right:15px;z-index:10;
+        background:rgba(0,0,0,0.05);border:none;color:#1f2937;
+        width:30px;height:30px;border-radius:50%;cursor:pointer;">✕</button>
+
+      <support-chatbot
+        embedded
+        title="AI Assistant"
+        welcome="Hello! I can help you manage your tasks and navigate the dashboard."
+        endpoint="/api/chat">
+      </support-chatbot>
+
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="js/dashboard.js"></script>
+  <script src="js/chatbot-widget.js"></script>
+
+  <!-- ✅ CHAT MODAL CONTROLS -->
+  <script>
+    function openChatModal() {
+      document.getElementById('chatbotModal').style.display = 'flex';
+    }
+
+    function closeChatModal() {
+      document.getElementById('chatbotModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
